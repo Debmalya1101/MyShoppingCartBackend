@@ -97,23 +97,43 @@ public class ProductController {
 	}
 
 	// WishlistController
-	@PostMapping("/wishlist")
-	public void addToWishlist(@RequestBody Product product) {
+//	@PostMapping("/wishlist")
+//	public void addToWishlist(@RequestBody Product product) {
+//		Wishlist ob = new Wishlist();
+//		ob.setName(product.getName());
+//		ob.setPrice(product.getPrice());
+//		ob.setProductId(product.getId());
+//		wishrepo.save(ob);
+//	}
+//
+//	@GetMapping("/wishlist")
+//	public List<Wishlist> getWishlist() {
+//		return wishrepo.findAll();
+//	}
+//
+//	@DeleteMapping("/wishlist/{id}")
+//	public void removeFromWishlist(@PathVariable("id") long pid) {
+//		wishrepo.deleteById(pid);
+//	}
+	
+	@PostMapping("/wishlist/{userid}")
+	public void addToWishlistByUser(@RequestBody Product product, @PathVariable("userid") int userId) {
 		Wishlist ob = new Wishlist();
 		ob.setName(product.getName());
-		ob.setPrice(product.getPrice());
 		ob.setProductId(product.getId());
+		ob.setPrice(product.getPrice());
+		ob.setUserId(userId);
 		wishrepo.save(ob);
 	}
-
-	@GetMapping("/wishlist")
-	public List<Wishlist> getWishlist() {
-		return wishrepo.findAll();
+	
+	@GetMapping("/wishlist/{userid}")
+	public List<Wishlist> getWishListByUser(@PathVariable("userid") int userId){
+		return wishrepo.findByUserId(userId);
 	}
-
-	@DeleteMapping("/wishlist/{id}")
-	public void removeFromWishlist(@PathVariable("id") long pid) {
-		wishrepo.deleteById(pid);
+	
+	@Transactional
+	@DeleteMapping("/wishlist/{pid}/{userid}")
+	public void removeFromWishlistByUser(@PathVariable("pid") Long productId, @PathVariable("userid") int userId) {
+		wishrepo.deleteByProductIdAndUserId(productId, userId);
 	}
-
 }
