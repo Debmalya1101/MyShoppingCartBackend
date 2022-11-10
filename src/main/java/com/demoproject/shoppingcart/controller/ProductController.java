@@ -38,6 +38,12 @@ public class ProductController {
 	public List<Product> getAllProducts() {
 		return repo.findAll();
 	}
+	
+	@Transactional
+	@GetMapping("/products/{start}/{end}")
+	public List<Product> getAllProductsByPrice(@PathVariable("start") Long start, @PathVariable("end") Long end) {
+		return repo.findByPriceBetween(start, end);
+	}
 
 	// CartController
 //	@PostMapping("/cart")
