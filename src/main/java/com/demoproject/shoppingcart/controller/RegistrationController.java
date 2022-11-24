@@ -56,5 +56,13 @@ public class RegistrationController {
 			throw new Exception("Bad Credentials");
 		return userObj;
 	}
+	
+	@PostMapping("/updateuser")
+	@CrossOrigin(origins = "http://localhost:4200")
+	public User updateUser(@RequestBody User user) throws Exception {
+		String tempass=this.encrypt(user.getPassword());
+		user.setPassword(tempass);
+		return service.saveUser(user);
+	}
 
 }
