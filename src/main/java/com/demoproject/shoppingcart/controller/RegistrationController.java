@@ -1,5 +1,8 @@
 package com.demoproject.shoppingcart.controller;
 
+import java.util.Base64;
+import java.util.Base64.Encoder;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,15 +19,16 @@ public class RegistrationController {
 	private RegistrationService service;
 	
 	public String encrypt(String str){
-        StringBuffer sb = new StringBuffer();
-      //Converting string to character array
-      char ch[] = str.toCharArray();
-      for(int i = 0; i < ch.length; i++) {
-         String hexString = Integer.toHexString(ch[i]);
-         sb.append(hexString);
-      }
-      String result = sb.toString();
-      return result;
+//       StringBuffer sb = new StringBuffer();
+//      char ch[] = str.toCharArray();
+//      for(int i = 0; i < ch.length; i++) {
+//         String hexString = Integer.toHexString(ch[i]);
+//         sb.append(hexString);
+//      }
+//      String result = sb.toString();
+//      return result;
+		Encoder encoder = Base64.getEncoder();
+		return encoder.encodeToString(str.getBytes());
     }
 
 	@PostMapping("/registeruser")
