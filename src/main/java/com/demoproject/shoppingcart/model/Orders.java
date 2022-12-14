@@ -20,20 +20,29 @@ public class Orders {
 	private Date orderDate;
 	private String products;
 	private Long total;
+	private String name;
+	private Long phoneNo;
+	private String address;
 	
 	public Orders() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Orders(Long orderId, int userId, Date orderDate, String products, Long total) {
+	public Orders(Long orderId, int userId, Date orderDate, String products, Long total, String name, Long phoneNo,
+			String address) {
 		super();
 		this.orderId = orderId;
 		this.userId = userId;
 		this.orderDate = orderDate;
 		this.products = products;
 		this.total = total;
+		this.name = name;
+		this.phoneNo = phoneNo;
+		this.address = address;
 	}
+
+
 
 	public Long getOrderId() {
 		return orderId;
@@ -73,6 +82,30 @@ public class Orders {
 
 	public void setTotal(Long total) {
 		this.total = total;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Long getPhoneNo() {
+		return phoneNo;
+	}
+
+	public void setPhoneNo(Long phoneNo) {
+		this.phoneNo = phoneNo;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	
 	

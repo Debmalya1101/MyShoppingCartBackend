@@ -159,20 +159,22 @@ public class ProductController {
 	
 	//Order History Controller
 	@PostMapping("/myorders/{userid}")
-	public void addToOrderHistory(@RequestBody List<Cart> carts, @PathVariable("userid") int userId) {
-		String products="";
-		long total = 0;
-		for(Cart cart : carts) {
-			products+= (cart.getProductName()+" || ");
-			System.out.println(products);
-			total += cart.getPrice() * cart.getQty();
-		}
-		Orders ob = new Orders();
-		ob.setOrderDate(new Date());
-		ob.setProducts(products);
-		ob.setUserId(userId);
-		ob.setTotal(total);
-		orderrepo.save(ob);
+	public void addToOrderHistory(@RequestBody Orders order, @PathVariable("userid") int userId) {
+//		String products="";
+//		long total = 0;
+//		for(Cart cart : carts) {
+//			products+= (cart.getProductName()+" || ");
+//			System.out.println(products);
+//			total += cart.getPrice() * cart.getQty();
+//		}
+//		Orders ob = new Orders();
+//		ob.setOrderDate(new Date());
+//		ob.setProducts(products);
+//		ob.setUserId(userId);
+//		ob.setTotal(total);
+		order.setUserId(userId);
+		order.setOrderDate(new Date());
+		orderrepo.save(order);
 		
 	}
 	
