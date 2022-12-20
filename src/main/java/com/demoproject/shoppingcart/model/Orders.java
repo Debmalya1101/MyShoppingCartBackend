@@ -22,6 +22,7 @@ public class Orders {
 	private Long total;
 	private String name;
 	private Long phoneNo;
+	private String email; 
 	private String address;
 	
 	public Orders() {
@@ -30,7 +31,7 @@ public class Orders {
 	}
 
 	public Orders(Long orderId, int userId, Date orderDate, String products, Long total, String name, Long phoneNo,
-			String address) {
+			String email, String address) {
 		super();
 		this.orderId = orderId;
 		this.userId = userId;
@@ -39,10 +40,19 @@ public class Orders {
 		this.total = total;
 		this.name = name;
 		this.phoneNo = phoneNo;
+		this.email=email;
 		this.address = address;
 	}
 
 
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 	public Long getOrderId() {
 		return orderId;
