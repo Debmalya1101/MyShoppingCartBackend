@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,7 +47,7 @@ public class ProductController {
 	public List<Product> getAllProducts() {
 		return repo.findAll();
 	}
-	
+
 	@Transactional
 	@GetMapping("/products/{start}/{end}")
 	public List<Product> getAllProductsByPrice(@PathVariable("start") Long start, @PathVariable("end") Long end) {
@@ -98,18 +100,18 @@ public class ProductController {
 	}
 
 	// CartController User specific
-	
+
 	@GetMapping("/cartitems/{userid}")
 	public List<Cart> getCartItemsByUser(@PathVariable("userid") int userid) {
 		return cartrepo.findByUserId(userid);
 	}
-	
+
 	@Transactional
 	@DeleteMapping("cart/{pid}/{userid}")
 	public void removeFromCart(@PathVariable("pid") Long productId, @PathVariable("userid") int userId) {
 		cartrepo.deleteByProductIdAndUserId(productId, userId);
 	}
-	
+
 	@Transactional
 	@DeleteMapping("cartall/{userid}")
 	public void removeAllFromCart(@PathVariable("userid") int userId) {
@@ -135,7 +137,7 @@ public class ProductController {
 //	public void removeFromWishlist(@PathVariable("id") long pid) {
 //		wishrepo.deleteById(pid);
 //	}
-	
+
 	@PostMapping("/wishlist/{userid}")
 	public void addToWishlistByUser(@RequestBody Product product, @PathVariable("userid") int userId) {
 		Wishlist ob = new Wishlist();
@@ -145,39 +147,34 @@ public class ProductController {
 		ob.setUserId(userId);
 		wishrepo.save(ob);
 	}
-	
+
 	@GetMapping("/wishlist/{userid}")
-	public List<Wishlist> getWishListByUser(@PathVariable("userid") int userId){
+	public List<Wishlist> getWishListByUser(@PathVariable("userid") int userId) {
 		return wishrepo.findByUserId(userId);
 	}
-	
+
 	@Transactional
 	@DeleteMapping("/wishlist/{pid}/{userid}")
 	public void removeFromWishlistByUser(@PathVariable("pid") Long productId, @PathVariable("userid") int userId) {
 		wishrepo.deleteByProductIdAndUserId(productId, userId);
 	}
-	
-	//Order History Controller
+
+	// Order History Controller
+
 	@PostMapping("/myorders/{userid}")
 	public void addToOrderHistory(@RequestBody Orders order, @PathVariable("userid") int userId) {
-//		String products="";
-//		long total = 0;
-//		for(Cart cart : carts) {
-//			products+= (cart.getProductName()+" || ");
-//			System.out.println(products);
-//			total += cart.getPrice() * cart.getQty();
-//		}
-//		Orders ob = new Orders();
-//		ob.setOrderDate(new Date());
-//		ob.setProducts(products);
-//		ob.setUserId(userId);
-//		ob.setTotal(total);
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, dd MMM yyyy");
+
+		LocalDateTime now = LocalDateTime.now();
+
+		String dateTimeString = now.format(formatter);
 		order.setUserId(userId);
-		order.setOrderDate(new Date());
+		order.setOrderDate(dateTimeString);
 		orderrepo.save(order);
-		
+
 	}
-	
+
 	@GetMapping("/myorders/{userid}")
 	public List<Orders> getOrderHistory(@PathVariable("userid") int userId) {
 		return orderrepo.findByUserId(userId);

@@ -17,7 +17,7 @@ public class Orders {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long orderId;
 	private int userId;
-	private Date orderDate;
+	private String orderDate;
 	private String products;
 	private Long total;
 	private String name;
@@ -30,7 +30,7 @@ public class Orders {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Orders(Long orderId, int userId, Date orderDate, String products, Long total, String name, Long phoneNo,
+	public Orders(Long orderId, int userId, String orderDate, String products, Long total, String name, Long phoneNo,
 			String email, String address) {
 		super();
 		this.orderId = orderId;
@@ -70,11 +70,11 @@ public class Orders {
 		this.userId = userId;
 	}
 
-	public Date getOrderDate() {
+	public String getOrderDate() {
 		return orderDate;
 	}
 
-	public void setOrderDate(Date orderDate) {
+	public void setOrderDate(String orderDate) {
 		this.orderDate = orderDate;
 	}
 
