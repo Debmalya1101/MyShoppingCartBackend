@@ -54,31 +54,6 @@ public class ProductController {
 		return repo.findByPriceBetween(start, end);
 	}
 
-	// CartController
-//	@PostMapping("/cart")
-//	public void addProductToCart(@RequestBody Product product){
-//		Cart cart = new Cart();
-//		System.out.println(cartrepo.findByProductId(product.getId()));
-//		if(cartrepo.findByProductId(product.getId())==null) {
-//			cart.setQty(1L);
-//			cart.setProductId(product.getId());
-//			cart.setProductName(product.getName());
-//			cart.setPrice(product.getPrice());
-//			cartrepo.save(cart);
-//		}
-//		else {
-//			cart=cartrepo.findByProductId(product.getId());
-//			cart.setQty(cart.getQty()+1);
-//			cartrepo.save(cart);
-//		}
-//		
-//	}
-
-	// CartController
-//	@GetMapping("/cartitems")
-//	public List<Cart> getAllCartItems(){
-//		return cartrepo.findAll();
-//	}
 
 	// CartController for specific User
 	@PostMapping("/cart/{userid}")
@@ -119,24 +94,6 @@ public class ProductController {
 	}
 
 	// WishlistController
-//	@PostMapping("/wishlist")
-//	public void addToWishlist(@RequestBody Product product) {
-//		Wishlist ob = new Wishlist();
-//		ob.setName(product.getName());
-//		ob.setPrice(product.getPrice());
-//		ob.setProductId(product.getId());
-//		wishrepo.save(ob);
-//	}
-//
-//	@GetMapping("/wishlist")
-//	public List<Wishlist> getWishlist() {
-//		return wishrepo.findAll();
-//	}
-//
-//	@DeleteMapping("/wishlist/{id}")
-//	public void removeFromWishlist(@PathVariable("id") long pid) {
-//		wishrepo.deleteById(pid);
-//	}
 
 	@PostMapping("/wishlist/{userid}")
 	public void addToWishlistByUser(@RequestBody Product product, @PathVariable("userid") int userId) {
