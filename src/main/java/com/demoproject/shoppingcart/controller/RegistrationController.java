@@ -2,6 +2,7 @@ package com.demoproject.shoppingcart.controller;
 
 import java.util.Base64;
 import java.util.Base64.Encoder;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.demoproject.shoppingcart.model.User;
 import com.demoproject.shoppingcart.service.RegistrationService;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 @RestController
 public class RegistrationController {
@@ -47,9 +51,10 @@ public class RegistrationController {
 		return obj;
 	}
 
+	private static final String SECRET_KEY="oGp4NeWu0OBBmcyVF36Q_YVkF5TYkuNHaFwlCYuc-jA";
 	@PostMapping("/login")
 	@CrossOrigin(origins = "http://localhost:4200")
-	public User loginUser(@RequestBody User user) throws Exception {
+	public String loginUser(@RequestBody User user) throws Exception {
 		String tempEmailId = user.getEmailId();
 		String tempPass = this.encrypt(user.getPassword());
 		User userObj = null;
@@ -58,7 +63,22 @@ public class RegistrationController {
 		}
 		if (userObj == null)
 			throw new Exception("Bad Credentials");
-		return userObj;
+		
+		long time = System.currentTimeMillis();
+		Date issuedTime = new Date(time);
+		Date expireTime = new Date(time + 1800000);
+		
+		String token = Jwts.builder()
+						.setIssuedAt(issuedTime)
+						.claim("id", userObj.getId())
+						.claim("emailId", userObj.getEmailId())
+						.claim("userName", userObj.getUserName())
+						.setExpiration(expireTime)
+						.signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+		System.out.println(token);
+		
+		return token;
+//		return userObj;
 	}
 	
 	@PostMapping("/updateuser")
