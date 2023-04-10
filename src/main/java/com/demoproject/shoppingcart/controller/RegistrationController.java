@@ -38,6 +38,7 @@ public class RegistrationController {
 	@PostMapping("/registeruser")
 	@CrossOrigin(origins = "http://localhost:4200")
 	public User registerUser(@RequestBody User user) throws Exception {
+		user.setRole("ROLE_USER");
 		String tempEmailId = user.getEmailId();
 		if (tempEmailId != null && !"".equals(tempEmailId)) {
 			User obj = service.fetchUserByEmailId(tempEmailId);
@@ -45,8 +46,8 @@ public class RegistrationController {
 				throw new Exception("User with " + tempEmailId + " already exists!");
 		}
 		User obj = null;
-		String temppass=this.encrypt(user.getPassword());
-		user.setPassword(temppass);
+//		String temppass=this.encrypt(user.getPassword());
+//		user.setPassword(temppass);
 		obj = service.saveUser(user);
 		return obj;
 	}
@@ -56,7 +57,11 @@ public class RegistrationController {
 	@CrossOrigin(origins = "http://localhost:4200")
 	public String loginUser(@RequestBody User user) throws Exception {
 		String tempEmailId = user.getEmailId();
-		String tempPass = this.encrypt(user.getPassword());
+		
+		// for front-end password encryption there is no need to encrypt the password at the back-end
+//		String tempPass = this.encrypt(user.getPassword());
+		String tempPass = user.getPassword();
+		System.out.println(tempPass);
 		User userObj = null;
 		if (tempEmailId != null && tempPass != null) {
 			userObj = service.fetchUserByEmailIdAndPassword(tempEmailId, tempPass);
@@ -73,6 +78,7 @@ public class RegistrationController {
 						.claim("id", userObj.getId())
 						.claim("emailId", userObj.getEmailId())
 						.claim("userName", userObj.getUserName())
+						.claim("role", userObj.getRole())
 						.setExpiration(expireTime)
 						.signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
 		System.out.println(token);

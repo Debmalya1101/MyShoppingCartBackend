@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,9 +44,22 @@ public class ProductController {
 	@Autowired
 	OrdersRepository orderrepo;
 
+	//Product Controller
 	@GetMapping("/products")
 	public List<Product> getAllProducts() {
 		return repo.findAll();
+	}
+	@PostMapping("/products")
+	public Product addProduct(@RequestBody Product product) {
+		return repo.save(product);
+	}
+	@PutMapping("/products")
+	public Product editProduct(@RequestBody Product product) {
+		return repo.save(product);
+	}
+	@DeleteMapping("/products/{id}")
+	public void deleteMapping(@PathVariable("id") Long id) {
+		repo.deleteById(id);
 	}
 
 	@Transactional
@@ -91,6 +105,19 @@ public class ProductController {
 	@DeleteMapping("cartall/{userid}")
 	public void removeAllFromCart(@PathVariable("userid") int userId) {
 		cartrepo.deleteByUserId(userId);
+	}
+	
+	@PostMapping("/cart/increase/{id}")
+	public void incresequantity(@PathVariable("id") Long cartId) {
+		Cart cart = cartrepo.findById(cartId).get();
+		cart.setQty(cart.getQty()+1);
+		cartrepo.save(cart);
+	}
+	@PostMapping("/cart/decrease/{id}")
+	public void decresequantity(@PathVariable("id") Long cartId) {
+		Cart cart = cartrepo.findById(cartId).get();
+		cart.setQty(cart.getQty()-1);
+		cartrepo.save(cart);
 	}
 
 	// WishlistController
