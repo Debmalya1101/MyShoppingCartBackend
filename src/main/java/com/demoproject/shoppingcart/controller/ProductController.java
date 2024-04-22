@@ -23,6 +23,7 @@ import com.demoproject.shoppingcart.model.Cart;
 import com.demoproject.shoppingcart.model.Orders;
 import com.demoproject.shoppingcart.model.Product;
 import com.demoproject.shoppingcart.model.Wishlist;
+import com.demoproject.shoppingcart.model.graphData;
 import com.demoproject.shoppingcart.repository.CartRepository;
 import com.demoproject.shoppingcart.repository.OrdersRepository;
 import com.demoproject.shoppingcart.repository.ProductRepository;
@@ -48,7 +49,7 @@ public class ProductController {
 	@GetMapping("/products")
 	public List<Product> getAllProducts() {
 		return repo.findAll();
-	}
+	} 
 	@PostMapping("/products")
 	public Product addProduct(@RequestBody Product product) {
 		return repo.save(product);
@@ -61,6 +62,12 @@ public class ProductController {
 	public void deleteMapping(@PathVariable("id") Long id) {
 		repo.deleteById(id);
 	}
+//	@DeleteMapping("/products")
+//	public void deleteMultipleProducts(@RequestBody Long[] ids) {
+//		for(Long i:ids) {
+//			System.out.println(i);
+//		}
+//	}
 
 	@Transactional
 	@GetMapping("/products/{start}/{end}")
@@ -148,7 +155,7 @@ public class ProductController {
 	@PostMapping("/myorders/{userid}")
 	public void addToOrderHistory(@RequestBody Orders order, @PathVariable("userid") int userId) {
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, dd MMM yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 		LocalDateTime now = LocalDateTime.now();
 
@@ -162,5 +169,15 @@ public class ProductController {
 	@GetMapping("/myorders/{userid}")
 	public List<Orders> getOrderHistory(@PathVariable("userid") int userId) {
 		return orderrepo.findByUserId(userId);
+	}
+	
+	@GetMapping("/myorders")
+	public List<Orders> getAllOrders() {
+		return orderrepo.findAll();
+	}
+	
+	@GetMapping("/myorders/graphData")
+	public List<graphData> getGraphData(@RequestParam int year) {
+		return orderrepo.getGraphData(year);
 	}
 }
